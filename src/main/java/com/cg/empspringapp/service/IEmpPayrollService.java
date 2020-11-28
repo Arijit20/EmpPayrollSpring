@@ -14,5 +14,7 @@ public interface IEmpPayrollService {
 	User deleteUser(Long id) throws EmpPayrollException;
 
 	List<User> getAllUser();
+	
+	User getUserById(Long id) throws EmpPayrollException;
 
 }

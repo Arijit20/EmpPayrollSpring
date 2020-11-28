@@ -20,10 +20,10 @@ public class EmpPayrollService implements IEmpPayrollService {
 
 	@Override
 	public User CreateUser(User user) throws EmpPayrollException {
-		if(Objects.nonNull(user.getName()) && Objects.nonNull(user.getSalary())) {
-		EmpPayroll empPayroll = new EmpPayroll(user.getName(), user.getSalary());
-		return new User(empPayrollRepository.save(empPayroll));
-		}else {
+		if (Objects.nonNull(user.getName()) && Objects.nonNull(user.getSalary())) {
+			EmpPayroll empPayroll = new EmpPayroll(user.getName(), user.getSalary());
+			return new User(empPayrollRepository.save(empPayroll));
+		} else {
 			throw new EmpPayrollException("Invalid Entry");
 		}
 	}
@@ -39,7 +39,7 @@ public class EmpPayrollService implements IEmpPayrollService {
 				employee.setSalary(user.getSalary());
 			}
 			return new User(empPayrollRepository.save(employee));
-		}).orElseThrow(()-> new EmpPayrollException("Employee match not found"));
+		}).orElseThrow(() -> new EmpPayrollException("Employee match not found"));
 	}
 
 	@Override
@@ -47,11 +47,21 @@ public class EmpPayrollService implements IEmpPayrollService {
 		return empPayrollRepository.findById(id).map(employee -> {
 			empPayrollRepository.deleteById(employee.getId());
 			return new User(employee);
-		}).orElseThrow(()-> new EmpPayrollException("Employee match not found"));
+		}).orElseThrow(() -> new EmpPayrollException("Employee match not found"));
 	}
 
 	@Override
 	public List<User> getAllUser() {
 		return empPayrollRepository.findAll().stream().map(employee -> new User(employee)).collect(Collectors.toList());
+	}
+
+	@Override
+	public User getUserById(Long id) throws EmpPayrollException {
+		EmpPayroll emp = empPayrollRepository.findById(id).orElse(null);
+		if (Objects.nonNull(emp)) {
+			return new User(emp);
+		} else {
+			throw new EmpPayrollException("Employee match not found");
+		}
 	}
 }

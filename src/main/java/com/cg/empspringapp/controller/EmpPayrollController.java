@@ -58,5 +58,14 @@ public class EmpPayrollController {
 			 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 	}
+	
+	@GetMapping("/get/{id}")
+	public ResponseEntity<User> getUserById(@PathVariable("id") Long id){
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(empPayrollService.getUserById(id));
+			}catch(Exception e) {
+				 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+			}
+	}
 
 }

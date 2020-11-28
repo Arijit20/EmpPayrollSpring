@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cg.empspringapp.dto.User;
+import com.cg.empspringapp.exception.EmpPayrollException;
 import com.cg.empspringapp.service.IEmpPayrollService;
 
 @RestController
@@ -24,22 +25,38 @@ public class EmpPayrollController {
 
 	@PostMapping("/create")
 	public ResponseEntity<User> createUser(@RequestBody User user) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(empPayrollService.CreateUser(user));
+		try {
+			return ResponseEntity.status(HttpStatus.CREATED).body(empPayrollService.CreateUser(user));
+		} catch (EmpPayrollException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
 	}
 
 	@PutMapping("/update")
 	public ResponseEntity<User> updateUser(@RequestBody User user) {
-		return ResponseEntity.status(HttpStatus.OK).body(empPayrollService.UpdateUser(user));
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(empPayrollService.UpdateUser(user));
+		} catch (EmpPayrollException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
 	}
 
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<User> deleteUser(@PathVariable("id") Long id) {
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(empPayrollService.deleteUser(id));
+		try {
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(empPayrollService.deleteUser(id));
+		} catch (EmpPayrollException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
 	}
 
 	@GetMapping("/get")
 	public ResponseEntity<List<User>> getAllUser() {
+		try {
 		return ResponseEntity.status(HttpStatus.OK).body(empPayrollService.getAllUser());
+		}catch(Exception e) {
+			 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
 	}
 
 }

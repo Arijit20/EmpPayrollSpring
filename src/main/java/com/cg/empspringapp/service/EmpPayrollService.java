@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cg.empspringapp.dto.User;
+import com.cg.empspringapp.exception.EmpPayrollException;
 import com.cg.empspringapp.model.EmpPayroll;
 import com.cg.empspringapp.repository.EmpPayrollRepository;
 
@@ -18,13 +19,17 @@ public class EmpPayrollService implements IEmpPayrollService {
 	private EmpPayrollRepository empPayrollRepository;
 
 	@Override
-	public User CreateUser(User user) {
+	public User CreateUser(User user) throws EmpPayrollException {
+		if(Objects.nonNull(user.getName()) && Objects.nonNull(user.getSalary())) {
 		EmpPayroll empPayroll = new EmpPayroll(user.getName(), user.getSalary());
 		return new User(empPayrollRepository.save(empPayroll));
+		}else {
+			throw new EmpPayrollException("Invalid Entry");
+		}
 	}
 
 	@Override
-	public User UpdateUser(User user) {
+	public User UpdateUser(User user) throws EmpPayrollException {
 
 		return empPayrollRepository.findById(user.getId()).map(employee -> {
 			if (Objects.nonNull(user.getName())) {
@@ -34,15 +39,15 @@ public class EmpPayrollService implements IEmpPayrollService {
 				employee.setSalary(user.getSalary());
 			}
 			return new User(empPayrollRepository.save(employee));
-		}).orElse(null);
+		}).orElseThrow(()-> new EmpPayrollException("Employee match not found"));
 	}
 
 	@Override
-	public User deleteUser(Long id) {
+	public User deleteUser(Long id) throws EmpPayrollException {
 		return empPayrollRepository.findById(id).map(employee -> {
 			empPayrollRepository.deleteById(employee.getId());
 			return new User(employee);
-		}).orElse(null);
+		}).orElseThrow(()-> new EmpPayrollException("Employee match not found"));
 	}
 
 	@Override

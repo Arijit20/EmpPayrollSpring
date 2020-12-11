@@ -12,51 +12,32 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "emp_payroll")
+@Table(name = "employee_payroll_data_new")
 public class EmpPayroll implements Serializable{
 	
-	    /**
-	 * 
-	 */
+	  
 	private static final long serialVersionUID = 1L;
 		@Id
 	    @GeneratedValue(strategy = GenerationType.AUTO)
 	    private Long id;
         private String name;
+        private String profile;
+        private String gender;
+        private String[] department;
         private double salary;
+        private String startDate;
+        private String notes;
         
         public EmpPayroll() {}
         
-        public EmpPayroll(String name, double salary) {
+        public EmpPayroll(String name, String profile, String gender, String[] department, double salary, String startDate, String notes) {
         	this.name = name;
+        	this.profile = profile;
+        	this.gender = gender;
+        	this.department = department;
         	this.salary = salary;
+        	this.startDate = startDate;
+        	this.notes = notes;
         }
         
-	    public Long getId() {
-			return id;
-		}
-		public void setId(Long id) {
-			this.id = id;
-		}
-		
-		public String getName() {
-			return name;
-		}
-		public void setName(String name) {
-			this.name = name;
-		}
-        
-		public double getSalary() {
-			return salary;
-		}
-
-		public void setSalary(double salary) {
-			this.salary = salary;
-		}
-
-		@Override
-		public String toString() {
-			return "name : " + name + "salary : " + salary ;
-		}
-
 }

@@ -21,7 +21,8 @@ public class EmpPayrollService implements IEmpPayrollService {
 	@Override
 	public User CreateUser(User user) throws EmpPayrollException {
 		if (Objects.nonNull(user.getName()) && Objects.nonNull(user.getSalary())) {
-			EmpPayroll empPayroll = new EmpPayroll(user.getName(), user.getSalary());
+			EmpPayroll empPayroll = new EmpPayroll(user.getName(), user.getProfile(),
+					user.getGender(), user.getDepartment(), user.getSalary(), user.getStartDate(), user.getNotes());
 			return new User(empPayrollRepository.save(empPayroll));
 		} else {
 			throw new EmpPayrollException("Invalid Entry");

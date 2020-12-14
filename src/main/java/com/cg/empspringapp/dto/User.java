@@ -1,7 +1,10 @@
 package com.cg.empspringapp.dto;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+
+import javax.validation.constraints.Pattern;
+
+import javax.validation.constraints.NotEmpty;
 
 import com.cg.empspringapp.model.EmpPayroll;
 
@@ -11,12 +14,26 @@ import lombok.Data;
 public class User {
 	
 	    private Long id;
+	    
+	    @NotEmpty(message = "First name cant be empty")
+	    @Pattern(regexp = "^[A-Z]{1}[a-zA-Z\\s]{2,}$", message = "Incorrect Name")
 	    private String name;
+	    
+	    @NotEmpty(message = "Profile Photo cant be empty")
 	    private String profile;
+	    
+	    @NotEmpty(message = "Gender cant be empty")
         private String gender;
+	    
+	    @NotEmpty(message = "Department cant be empty")
         private String[] department;
+	    
+	    @NotEmpty(message = "Salary cant be empty")
         private double salary;
+	    
+	    @NotEmpty(message = "Startdate cant be empty")
         private String startDate;
+	    
         private String notes;
         
 	    public User(){
@@ -32,14 +49,6 @@ public class User {
 	        this.salary = employee.getSalary();
 	        this.startDate = employee.getStartDate();
 	        this.notes = employee.getNotes();
-	    }
-	    
-	    public void setName(String name) {
-	    	Pattern pattern = Pattern.compile("^[A-Z]{1}[a-zA-Z\\s]{2,}$");
-			Matcher matcher = pattern.matcher(name);
-			Boolean b = matcher.find();
-			if(b) this.name = name;
-			else this.name = null;
 	    }
 
 }

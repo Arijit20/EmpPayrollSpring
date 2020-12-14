@@ -2,6 +2,8 @@ package com.cg.empspringapp.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,50 +24,33 @@ public class EmpPayrollController {
 
 	@Autowired
 	private IEmpPayrollService empPayrollService;
-
-	@PostMapping("/create")
-	public ResponseEntity<User> createUser(@RequestBody User user) {
+	
+	@GetMapping("/get")
+	public ResponseEntity<List<User>> getAllUser() {
 		try {
-			return ResponseEntity.status(HttpStatus.CREATED).body(empPayrollService.CreateUser(user));
+			return ResponseEntity.status(HttpStatus.OK).body(empPayrollService.getAllUser());
 		} catch (EmpPayrollException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 	}
 
+	@GetMapping("/get/{id}")
+	public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
+		return ResponseEntity.status(HttpStatus.OK).body(empPayrollService.getUserById(id));
+	}
+
+	@PostMapping("/create")
+	public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(empPayrollService.CreateUser(user));
+	}
+
 	@PutMapping("/update")
-	public ResponseEntity<User> updateUser(@RequestBody User user) {
-		try {
-			return ResponseEntity.status(HttpStatus.OK).body(empPayrollService.UpdateUser(user));
-		} catch (EmpPayrollException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-		}
+	public ResponseEntity<User> updateUser(@Valid @RequestBody User user) {
+		return ResponseEntity.status(HttpStatus.OK).body(empPayrollService.UpdateUser(user));
 	}
 
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<User> deleteUser(@PathVariable("id") Long id) {
-		try {
-			return ResponseEntity.status(HttpStatus.ACCEPTED).body(empPayrollService.deleteUser(id));
-		} catch (EmpPayrollException e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-		}
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(empPayrollService.deleteUser(id));
 	}
-
-	@GetMapping("/get")
-	public ResponseEntity<List<User>> getAllUser() {
-		try {
-		return ResponseEntity.status(HttpStatus.OK).body(empPayrollService.getAllUser());
-		}catch(Exception e) {
-			 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-		}
-	}
-	
-	@GetMapping("/get/{id}")
-	public ResponseEntity<User> getUserById(@PathVariable("id") Long id){
-		try {
-			return ResponseEntity.status(HttpStatus.OK).body(empPayrollService.getUserById(id));
-			}catch(Exception e) {
-				 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-			}
-	}
-
 }

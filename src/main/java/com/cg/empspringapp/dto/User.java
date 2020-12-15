@@ -5,6 +5,7 @@ package com.cg.empspringapp.dto;
 import javax.validation.constraints.Pattern;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import com.cg.empspringapp.model.EmpPayroll;
 
@@ -28,7 +29,7 @@ public class User {
 	    @NotEmpty(message = "Department cant be empty")
         private String[] department;
 	    
-	    @NotEmpty(message = "Salary cant be empty")
+	    @NotNull(message = "Salary cant be null")
         private double salary;
 	    
 	    @NotEmpty(message = "Startdate cant be empty")
